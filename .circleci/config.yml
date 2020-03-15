@@ -27,4 +27,4 @@ jobs:
       - run:
           name: Tests
           command: |
-            pipenv run python nosetest --with-coverage --cover-package=tucasa
+            pipenv run nosetests --with-coverage --cover-package=tucasa
