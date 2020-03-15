@@ -1,6 +1,6 @@
 import unittest
 
-from tucasa.parsers import ZonaProp
+from tucasa.parsers import zonaprop
 
 
 url_departamento = ("https://www.zonaprop.com.ar/propiedades/sensacional-"
@@ -11,15 +11,18 @@ url_listado = ("https://www.zonaprop.com.ar/departamentos-alquiler-"
 
 class TestZonaProp(unittest.TestCase):
   def setUp(self):
-    self.parser = ZonaProp()
+    pass
 
   def tearDown(self):
     pass
 
   def test_parser_propiedad_true(self):
-    prop = self.parser.es_propiedad(url_departamento)
+    departamento = zonaprop.Propiedad(url_departamento)
+    prop = departamento._es_propiedad
     self.assertTrue(prop)
 
   def test_parser_propiedad_false(self):
-    prop = self.parser.es_propiedad(url_listado)
+    with self.assertWarns(UserWarning):
+      propiedad = zonaprop.Propiedad(url_listado)
+    prop = propiedad._es_propiedad
     self.assertFalse(prop)

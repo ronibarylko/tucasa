@@ -1,15 +1,19 @@
 import bs4
 import requests
+import warnings
 
 
-class ZonaProp(object):
+class Propiedad(object):
   """
-  Parser para la información que surge de ZonaProp
+  Parser de propiedades de ZonaProp
   """
   def __init__(self, url: str):
     response = requests.get(url)
     self.soup = bs4.BeautifulSoup(response.text, 'html.parser')
+    if not self._es_propiedad:
+      warnings.warn(f"{url} no parece ser una propiedad.", UserWarning)
 
-  def es_propiedad(self) -> bool:
+  @property
+  def _es_propiedad(self) -> bool:
     es_propiedad = self.soup.body['id'].upper() == 'PROPERTY'
     return es_propiedad
