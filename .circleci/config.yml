@@ -28,3 +28,5 @@ jobs:
           name: Tests
           command: |
             pipenv run nosetests --with-coverage --cover-package=tucasa
+      - store_test_results:
+          path: test-results
