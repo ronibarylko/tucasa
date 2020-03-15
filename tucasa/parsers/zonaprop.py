@@ -89,6 +89,10 @@ class Propiedad(object):
   def estado(self) -> int:
     return self.informacion["Estado del inmueble"]
 
+  @property
+  def luminosidad(self) -> int:
+    return self.informacion["Luminosidad"]
+
   def _procesar_valor(self, clave):
     try:
       funcion = self._procesar_valor_conocidas[clave]

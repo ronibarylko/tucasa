@@ -135,3 +135,13 @@ class TestZonaProp(unittest.TestCase):
     propiedad = zonaprop.Propiedad(descarga_departamento2, True)
     estado = propiedad.estado
     self.assertEqual(estado, "Excelente")
+
+  def test_luminosidad_1(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento, True)
+    luminosidad = propiedad.luminosidad
+    self.assertEqual(luminosidad, "Muy luminoso")
+
+  def test_luminosidad_2(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+    luminosidad = propiedad.luminosidad
+    self.assertEqual(luminosidad, "Muy luminoso")
