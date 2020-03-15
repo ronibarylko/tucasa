@@ -22,13 +22,20 @@ class Propiedad(object):
       valor = int(valor)
       return valor
 
+    def antiguedad(entrada: str) -> int:
+      if entrada == "A estrenar":
+        anios = 0
+      else:
+        anios = int(entrada)
+      return anios
+
     self._procesar_valor_conocidas = {}
     self._procesar_valor_conocidas['Ambientes'] = lambda x: int(x)
     self._procesar_valor_conocidas['Baños'] = lambda x: int(x)
     self._procesar_valor_conocidas['Dormitorios'] = lambda x: int(x)
     self._procesar_valor_conocidas['Superficie total'] = quitar_m2
     self._procesar_valor_conocidas['Superficie cubierta'] = quitar_m2
-    self._procesar_valor_conocidas['Antigüedad'] = lambda x: int(x)
+    self._procesar_valor_conocidas['Antigüedad'] = antiguedad
 
     self._procesar_clave_conocidas = {}
     self._procesar_clave_conocidas['Baño'] = lambda x: x + "s"

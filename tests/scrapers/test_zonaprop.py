@@ -14,6 +14,8 @@ descarga_departamento = os.path.join(directorio,
                                      "../resources/departamento.html")
 descarga_departamento2 = os.path.join(directorio,
                                       "../resources/departamento2.html")
+descarga_departamento3 = os.path.join(directorio,
+                                      "../resources/departamento3.html")
 descarga_listado = os.path.join(directorio, "../resources/listado.html")
 
 
@@ -105,6 +107,11 @@ class TestZonaProp(unittest.TestCase):
     propiedad = zonaprop.Propiedad(descarga_departamento2, True)
     antiguedad = propiedad.antiguedad
     self.assertEqual(antiguedad, 22)
+
+  def test_antiguedad_2(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento3, True)
+    antiguedad = propiedad.antiguedad
+    self.assertEqual(antiguedad, 0)
 
   def test_disposicion_1(self):
     propiedad = zonaprop.Propiedad(descarga_departamento, True)
