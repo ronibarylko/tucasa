@@ -145,3 +145,23 @@ class TestZonaProp(unittest.TestCase):
     propiedad = zonaprop.Propiedad(descarga_departamento2, True)
     luminosidad = propiedad.luminosidad
     self.assertEqual(luminosidad, "Muy luminoso")
+
+  def test_alquiler_1(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento, True)
+    alquiler = propiedad.alquiler
+    self.assertEqual(alquiler, "USD 1.300")
+
+  def test_alquiler_2(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+    alquiler = propiedad.alquiler
+    self.assertEqual(alquiler, "$ 26.000")
+
+  def test_expensas_1(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento, True)
+    expensas = propiedad.expensas
+    self.assertEqual(expensas, "$ 6.400")
+
+  def test_expensas_2(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+    expensas = propiedad.expensas
+    self.assertEqual(expensas, "$ 8.000")

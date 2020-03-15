@@ -51,6 +51,10 @@ class Propiedad(object):
       clave = self._procesar_clave(clave)(clave)
       valor = self._procesar_valor(clave)(dato.b.text)
       _informacion[clave] = valor
+    alquiler = self.soup.find('div', {'class': 'price-items'})
+    _informacion["Alquiler"] = alquiler.span.text
+    expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
+    _informacion["Expensas"] = expensas.span.text
     return _informacion
 
   @property
@@ -92,6 +96,14 @@ class Propiedad(object):
   @property
   def luminosidad(self) -> int:
     return self.informacion["Luminosidad"]
+
+  @property
+  def alquiler(self) -> int:
+    return self.informacion["Alquiler"]
+
+  @property
+  def expensas(self) -> int:
+    return self.informacion["Expensas"]
 
   def _procesar_valor(self, clave):
     try:
