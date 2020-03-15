@@ -81,6 +81,10 @@ class Propiedad(object):
   def disposicion(self) -> int:
     return self.informacion["Disposición"]
 
+  @property
+  def orientacion(self) -> int:
+    return self.informacion["Orientación"]
+
   def _procesar_valor(self, clave):
     try:
       funcion = self._procesar_valor_conocidas[clave]
