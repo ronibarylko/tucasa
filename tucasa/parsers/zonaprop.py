@@ -25,13 +25,14 @@ class Propiedad(object):
     self._procesar_valor_conocidas = {}
     self._procesar_valor_conocidas['Ambientes'] = lambda x: int(x)
     self._procesar_valor_conocidas['Baños'] = lambda x: int(x)
+    self._procesar_valor_conocidas['Dormitorios'] = lambda x: int(x)
     self._procesar_valor_conocidas['Superficie total'] = quitar_m2
     self._procesar_valor_conocidas['Superficie cubierta'] = quitar_m2
 
     self._procesar_clave_conocidas = {}
     self._procesar_clave_conocidas['Baño'] = lambda x: x + "s"
     self._procesar_clave_conocidas['Ambiente'] = lambda x: x + "s"
-
+    self._procesar_clave_conocidas['Dormitorio'] = lambda x: x + "s"
 
     self._informacion = {}
 
@@ -66,6 +67,10 @@ class Propiedad(object):
   @property
   def banios(self) -> int:
     return self.informacion["Baños"]
+
+  @property
+  def dormitorios(self) -> int:
+    return self.informacion["Dormitorios"]
 
   def _procesar_valor(self, clave):
     try:

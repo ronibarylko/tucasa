@@ -85,3 +85,13 @@ class TestZonaProp(unittest.TestCase):
     propiedad = zonaprop.Propiedad(descarga_departamento2, True)
     banios = propiedad.banios
     self.assertEqual(banios, 1)
+
+  def test_dormitorios_1(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento, True)
+    dormitorios = propiedad.dormitorios
+    self.assertEqual(dormitorios, 3)
+
+  def test_dormitorios_2(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+    dormitorios = propiedad.dormitorios
+    self.assertEqual(dormitorios, 1)
