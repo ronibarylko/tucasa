@@ -28,6 +28,7 @@ class Propiedad(object):
     self._procesar_valor_conocidas['Dormitorios'] = lambda x: int(x)
     self._procesar_valor_conocidas['Superficie total'] = quitar_m2
     self._procesar_valor_conocidas['Superficie cubierta'] = quitar_m2
+    self._procesar_valor_conocidas['Antigüedad'] = lambda x: int(x)
 
     self._procesar_clave_conocidas = {}
     self._procesar_clave_conocidas['Baño'] = lambda x: x + "s"
@@ -57,6 +58,10 @@ class Propiedad(object):
     return self.informacion["Ambientes"]
 
   @property
+  def antiguedad(self) -> int:
+    return self.informacion["Antigüedad"]
+
+  @property
   def superficie_total(self) -> int:
     return self.informacion["Superficie total"]
 
@@ -71,6 +76,10 @@ class Propiedad(object):
   @property
   def dormitorios(self) -> int:
     return self.informacion["Dormitorios"]
+
+  @property
+  def disposicion(self) -> int:
+    return self.informacion["Disposición"]
 
   def _procesar_valor(self, clave):
     try:
