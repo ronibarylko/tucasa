@@ -125,3 +125,13 @@ class TestZonaProp(unittest.TestCase):
     propiedad = zonaprop.Propiedad(descarga_departamento2, True)
     orientacion = propiedad.orientacion
     self.assertEqual(orientacion, "NO")
+
+  def test_estado_1(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento, True)
+    estado = propiedad.estado
+    self.assertEqual(estado, "Excelente")
+
+  def test_estado_2(self):
+    propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+    estado = propiedad.estado
+    self.assertEqual(estado, "Excelente")
