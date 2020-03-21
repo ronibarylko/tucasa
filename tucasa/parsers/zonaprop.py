@@ -134,6 +134,11 @@ class Propiedad(object):
     def descripcion(self) -> str:
         return self.informacion["Descripcion"]
 
+    @property
+    def contacto(self):
+        #TODO: Extraer contacto (necesita cargar JS seguramente)
+        raise NotImplementedError
+
     def _procesar_valor(self, clave):
         try:
             funcion = self._procesar_valor_conocidas[clave]

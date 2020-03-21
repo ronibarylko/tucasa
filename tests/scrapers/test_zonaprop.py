@@ -220,3 +220,8 @@ class TestZonaProp(unittest.TestCase):
         descripcion = propiedad.descripcion
         self.assertTrue(descripcion.startswith("Hermoso piso en alquiler en pleno Belgrano"))
         self.assertTrue(descripcion.endswith("SEGUINOS EN FACEBOOK"))
+
+    def test_contacto(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento, True)
+        with self.assertRaises(NotImplementedError):
+            contacto = propiedad.contacto
