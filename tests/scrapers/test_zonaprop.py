@@ -225,3 +225,28 @@ class TestZonaProp(unittest.TestCase):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         with self.assertRaises(NotImplementedError):
             contacto = propiedad.contacto
+
+    def test_caracteristicas_1(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento, True)
+        caracteristicas = propiedad.caracteristicas
+        self.assertIn("Características generales", caracteristicas.keys())
+        self.assertIn("Servicios", caracteristicas.keys())
+        self.assertIn("Ambientes", caracteristicas.keys())
+        self.assertIn("Características", caracteristicas.keys())
+
+    def test_caracteristicas_2(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+        caracteristicas = propiedad.caracteristicas
+        self.assertIn("Características generales", caracteristicas.keys())
+        self.assertIn("Servicios", caracteristicas.keys())
+        self.assertIn("Ambientes", caracteristicas.keys())
+        self.assertNotIn("Características", caracteristicas.keys())
+
+    def test_caracteristicas_3(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento3, True)
+        caracteristicas = propiedad.caracteristicas
+        self.assertIn("Características generales", caracteristicas.keys())
+        self.assertIn("Servicios", caracteristicas.keys())
+        self.assertIn("Ambientes", caracteristicas.keys())
+        self.assertIn("Características", caracteristicas.keys())
+

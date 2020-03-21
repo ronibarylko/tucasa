@@ -72,6 +72,14 @@ class Propiedad(object):
         _informacion['Ubicacion'] = ubicacion
         descripcion = self.soup.find('div', {'id': 'verDatosDescripcion'})
         _informacion["Descripcion"] = descripcion.text
+        caracteristicas = {}
+        general_section = self.soup.findAll('section', {'class': 'general-section article-section'})
+        for sec in general_section:
+            clave = sec.div.text.strip()
+            esta_lista = sec.findAll('li')
+            estas_caracteristicas = tuple(_.text.strip() for _ in esta_lista)
+            caracteristicas[clave] = estas_caracteristicas
+        _informacion["Caracteristicas"] = caracteristicas
         return _informacion
 
     @property
@@ -138,6 +146,10 @@ class Propiedad(object):
     def contacto(self):
         #TODO: Extraer contacto (necesita cargar JS seguramente)
         raise NotImplementedError
+
+    @property
+    def caracteristicas(self):
+        return self.informacion["Caracteristicas"]
 
     def _procesar_valor(self, clave):
         try:
