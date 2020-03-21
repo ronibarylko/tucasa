@@ -1,6 +1,7 @@
+import warnings
+
 import bs4
 import requests
-import warnings
 
 
 class Propiedad(object):
@@ -144,7 +145,7 @@ class Propiedad(object):
 
     @property
     def contacto(self):
-        #TODO: Extraer contacto (necesita cargar JS seguramente)
+        # TODO: Extraer contacto (necesita cargar JS seguramente)
         raise NotImplementedError
 
     @property
@@ -153,7 +154,7 @@ class Propiedad(object):
 
     @property
     def ubicacion_mapa(self):
-        #TODO: Extraer ubicación desde el mapa
+        # TODO: Extraer ubicación desde el mapa
         raise NotImplementedError
 
     def _procesar_valor(self, clave):
@@ -169,3 +170,23 @@ class Propiedad(object):
         except KeyError:
             funcion = lambda x: x
         return funcion
+
+
+class Listado(object):
+    """
+    Parser de listado de propiedades de ZonaProp
+    """
+
+    def __init__(self, url: str, local=False):
+        if not local:
+            response = requests.get(url).text
+        else:
+            response = open(url).read()
+        self.soup = bs4.BeautifulSoup(response, 'html.parser')
+        if not self._es_listado:
+            warnings.warn(f"{url} no parece ser una propiedad.", UserWarning)
+
+    @property
+    def _es_listado(self) -> bool:
+        es_listado = self.soup.body['id'].upper() == 'BODY-LISTADO'
+        return es_listado

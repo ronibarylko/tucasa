@@ -1,5 +1,5 @@
-import unittest
 import os
+import unittest
 
 from tucasa.parsers import zonaprop
 
@@ -18,7 +18,7 @@ descarga_departamento3 = os.path.join(directorio,
 descarga_listado = os.path.join(directorio, "../resources/listado.html")
 
 
-class TestZonaProp(unittest.TestCase):
+class TestPropiedad(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -202,7 +202,6 @@ class TestZonaProp(unittest.TestCase):
         ubicacion = propiedad.ubicacion
         self.assertEqual(ubicacion, "Belgrano, Capital Federal")
 
-
     def test_descripcion_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         descripcion = propiedad.descripcion
@@ -224,7 +223,7 @@ class TestZonaProp(unittest.TestCase):
     def test_contacto(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         with self.assertRaises(NotImplementedError):
-            contacto = propiedad.contacto
+            propiedad.contacto()
 
     def test_caracteristicas_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
@@ -253,4 +252,34 @@ class TestZonaProp(unittest.TestCase):
     def test_ubicacion_mapa(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         with self.assertRaises(NotImplementedError):
-            ubicacion_mapa = propiedad.ubicacion_mapa
+            propiedad.ubicacion_mapa()
+
+
+class TestListado(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_parser_listado_true(self):
+        listado = zonaprop.Listado(url_listado)
+        prop = listado._es_listado
+        self.assertTrue(prop)
+
+    def test_parser_listado_false(self):
+        with self.assertWarns(UserWarning):
+            listado = zonaprop.Listado(url_departamento)
+        prop = listado._es_listado
+        self.assertFalse(prop)
+
+    def test_parser_listado_local_true(self):
+        departamento = zonaprop.Listado(descarga_listado, True)
+        prop = departamento._es_listado
+        self.assertTrue(prop)
+
+    def test_parser_listado_local_false(self):
+        with self.assertWarns(UserWarning):
+            listado = zonaprop.Listado(descarga_departamento, True)
+        prop = listado._es_listado
+        self.assertFalse(prop)
