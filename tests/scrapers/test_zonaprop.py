@@ -250,3 +250,7 @@ class TestZonaProp(unittest.TestCase):
         self.assertIn("Ambientes", caracteristicas.keys())
         self.assertIn("Características", caracteristicas.keys())
 
+    def test_ubicacion_mapa(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento, True)
+        with self.assertRaises(NotImplementedError):
+            ubicacion_mapa = propiedad.ubicacion_mapa

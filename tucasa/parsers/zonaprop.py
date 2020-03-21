@@ -151,6 +151,11 @@ class Propiedad(object):
     def caracteristicas(self):
         return self.informacion["Caracteristicas"]
 
+    @property
+    def ubicacion_mapa(self):
+        #TODO: Extraer ubicación desde el mapa
+        raise NotImplementedError
+
     def _procesar_valor(self, clave):
         try:
             funcion = self._procesar_valor_conocidas[clave]
