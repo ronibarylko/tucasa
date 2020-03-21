@@ -25,12 +25,12 @@ class TestZonaProp(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def atest_parser_propiedad_true(self):
+    def test_parser_propiedad_true(self):
         departamento = zonaprop.Propiedad(url_departamento)
         prop = departamento._es_propiedad
         self.assertTrue(prop)
 
-    def atest_parser_propiedad_false(self):
+    def test_parser_propiedad_false(self):
         with self.assertWarns(UserWarning):
             propiedad = zonaprop.Propiedad(url_listado)
         prop = propiedad._es_propiedad
