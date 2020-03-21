@@ -50,7 +50,7 @@ class Propiedad(object):
     return es_propiedad
 
   @property
-  def informacion(self) -> bool:
+  def informacion(self) -> dict:
     datos = self.soup.findAll('li', {'class': 'icon-feature'})
     _informacion = {}
     for dato in datos:
