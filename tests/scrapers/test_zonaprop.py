@@ -107,6 +107,11 @@ class TestZonaProp(unittest.TestCase):
         antiguedad = propiedad.antiguedad
         self.assertEqual(antiguedad, 22)
 
+    def test_antiguedad_3(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento3, True)
+        antiguedad = propiedad.antiguedad
+        self.assertEqual(antiguedad, 0)
+
     def test_disposicion_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         disposicion = propiedad.disposicion
