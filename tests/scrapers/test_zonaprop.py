@@ -171,3 +171,52 @@ class TestZonaProp(unittest.TestCase):
         propiedad = zonaprop.Propiedad(descarga_departamento2, True)
         expensas = propiedad.expensas
         self.assertEqual(expensas, "$ 8.000")
+
+    def test_direccion_1(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento, True)
+        direccion = propiedad.direccion
+        self.assertEqual(direccion, "Doblas al 100")
+
+    def test_direccion_2(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+        direccion = propiedad.direccion
+        self.assertEqual(direccion, "Ciudad de la Paz")
+
+    def test_direccion_3(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento3, True)
+        direccion = propiedad.direccion
+        self.assertEqual(direccion, "Teodoro Garcia al 2100")
+
+    def test_ubicacion_1(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento, True)
+        ubicacion = propiedad.ubicacion
+        self.assertEqual(ubicacion, "Caballito, Capital Federal")
+
+    def test_ubicacion_2(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+        ubicacion = propiedad.ubicacion
+        self.assertEqual(ubicacion, "Belgrano, Capital Federal")
+
+    def test_ubicacion_3(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento3, True)
+        ubicacion = propiedad.ubicacion
+        self.assertEqual(ubicacion, "Belgrano, Capital Federal")
+
+
+    def test_descripcion_1(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento, True)
+        descripcion = propiedad.descripcion
+        self.assertTrue(descripcion.startswith("Departamento de categoría con impresionante vista al Parque"))
+        self.assertTrue(descripcion.endswith("Vivanco Negocios Inmobiliarios desde Sumaprop."))
+
+    def test_descripcion_2(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento2, True)
+        descripcion = propiedad.descripcion
+        self.assertTrue(descripcion.startswith("54 metros cuadrados con balcón en edificio"))
+        self.assertTrue(descripcion.endswith("EN EL EDIFICIO Cristina Ver datos 8444 ofic Ver datos"))
+
+    def test_descripcion_3(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento3, True)
+        descripcion = propiedad.descripcion
+        self.assertTrue(descripcion.startswith("Hermoso piso en alquiler en pleno Belgrano"))
+        self.assertTrue(descripcion.endswith("SEGUINOS EN FACEBOOK"))

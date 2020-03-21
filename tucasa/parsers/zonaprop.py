@@ -63,6 +63,15 @@ class Propiedad(object):
         _informacion["Alquiler"] = alquiler.span.text
         expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
         _informacion["Expensas"] = expensas.span.text
+        titulo = self.soup.find('h2', {'class': 'title-location'})
+        direccion_limpia = ' '.join(titulo.b.text.split())
+        sin_direccion = titulo.text.split(',')[1:]
+        sin_espacios = [_.strip() for _ in sin_direccion]
+        ubicacion = ', '.join(sin_espacios)
+        _informacion["Direccion"] = direccion_limpia
+        _informacion['Ubicacion'] = ubicacion
+        descripcion = self.soup.find('div', {'id': 'verDatosDescripcion'})
+        _informacion["Descripcion"] = descripcion.text
         return _informacion
 
     @property
@@ -112,6 +121,18 @@ class Propiedad(object):
     @property
     def expensas(self) -> int:
         return self.informacion["Expensas"]
+
+    @property
+    def direccion(self) -> str:
+        return self.informacion["Direccion"]
+
+    @property
+    def ubicacion(self) -> str:
+        return self.informacion["Ubicacion"]
+
+    @property
+    def descripcion(self) -> str:
+        return self.informacion["Descripcion"]
 
     def _procesar_valor(self, clave):
         try:
