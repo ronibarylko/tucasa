@@ -1,7 +1,10 @@
+import math
 import warnings
 
 import bs4
 import requests
+
+RESULTADOS_POR_PAGINA = 20
 
 
 class Propiedad(object):
@@ -184,9 +187,59 @@ class Listado(object):
             response = open(url).read()
         self.soup = bs4.BeautifulSoup(response, 'html.parser')
         if not self._es_listado:
-            warnings.warn(f"{url} no parece ser una propiedad.", UserWarning)
+            warnings.warn(f"{url} no parece ser un listado.", UserWarning)
 
     @property
     def _es_listado(self) -> bool:
         es_listado = self.soup.body['id'].upper() == 'BODY-LISTADO'
         return es_listado
+
+    @property
+    def _propiedades_div(self) -> list:
+        # TODO: Manejar de alguna manera los emprendimientos. Los estamos ignorando.
+        container = self.soup.find('div', {'class': 'list-card-container'})
+        prop = container.findAll('div', {'data-posting-type': 'PROPERTY'})
+        return prop
+
+    @staticmethod
+    def _propiedad_desde_div(div) -> str:
+        url = 'http://www.zonaprop.com.ar' + div['data-to-posting']
+        prop = Propiedad(url)
+        return prop
+
+
+class ResultadoBusqueda(object):
+    def __init__(self, url: str, local=False):
+        self.url = url
+        if not local:
+            response = requests.get(url).text
+        else:
+            warnings.warn("No están habilitadas todas las opciones para búsquedas descargadas")
+            response = open(url).read()
+        self.soup = bs4.BeautifulSoup(response, 'html.parser')
+        if not self._es_busqueda:
+            warnings.warn(f"{url} no parece ser una búsqueda.", UserWarning)
+
+    @property
+    def _es_busqueda(self):
+        es_busqueda = self.soup.body['id'].upper() == 'BODY-LISTADO'
+        return es_busqueda
+
+    @property
+    def cantidad_de_resultados(self) -> int:
+        titulo = self.soup.find('h1', {'class': 'list-result-title'})
+        cantidad = titulo.b.text.replace('.', '')
+        cantidad = int(cantidad)
+        return cantidad
+
+    def listado_pagina(self, n: int) -> str:
+        """
+        A partir de la url de la búsqueda, genera el listado de la página `n`.
+        """
+        url_pagina = self.url.replace('.html', f'-pagina-{n}.html')
+        return url_pagina
+
+    @property
+    def cantidad_de_paginas(self) -> int:
+        numero_de_paginas = math.ceil(self.cantidad_de_resultados / RESULTADOS_POR_PAGINA)
+        return numero_de_paginas

@@ -7,7 +7,8 @@ url_departamento = ("https://www.zonaprop.com.ar/propiedades/sensacional-"
                     "vista-a-parque-rivadavia.-amoblado.-45628502.html")
 url_listado = ("https://www.zonaprop.com.ar/departamentos-alquiler-"
                "belgrano-caballito-2-ambientes.html")
-
+url_listado2 = ("https://www.zonaprop.com.ar/departamentos-alquiler-palermo"
+                "-2-ambientes-15000-20000-pesos.html")
 directorio = os.path.dirname(__file__)
 descarga_departamento = os.path.join(directorio,
                                      "../resources/departamento.html")
@@ -16,6 +17,7 @@ descarga_departamento2 = os.path.join(directorio,
 descarga_departamento3 = os.path.join(directorio,
                                       "../resources/departamento3.html")
 descarga_listado = os.path.join(directorio, "../resources/listado.html")
+descarga_listado2 = os.path.join(directorio, "../resources/listado2.html")
 
 
 class TestPropiedad(unittest.TestCase):
@@ -274,8 +276,8 @@ class TestListado(unittest.TestCase):
         self.assertFalse(prop)
 
     def test_parser_listado_local_true(self):
-        departamento = zonaprop.Listado(descarga_listado, True)
-        prop = departamento._es_listado
+        listado = zonaprop.Listado(descarga_listado, True)
+        prop = listado._es_listado
         self.assertTrue(prop)
 
     def test_parser_listado_local_false(self):
@@ -283,3 +285,105 @@ class TestListado(unittest.TestCase):
             listado = zonaprop.Listado(descarga_departamento, True)
         prop = listado._es_listado
         self.assertFalse(prop)
+
+    def test_lista_propiedades(self):
+        listado = zonaprop.Listado(descarga_listado, True)
+        propiedades = listado._propiedades_div
+        self.assertEqual(len(propiedades), 15)
+
+    def test_lista_propiedades_2(self):
+        listado = zonaprop.Listado(descarga_listado2, True)
+        propiedades = listado._propiedades_div
+        self.assertEqual(len(propiedades), 20)
+
+    def test_propiedad_desde_div_1(self):
+        listado = zonaprop.Listado(url_listado)
+        propiedades = listado._propiedades_div
+        listado._propiedad_desde_div(propiedades[0])
+
+    def test_propiedad_desde_div_2(self):
+        listado = zonaprop.Listado(url_listado2)
+        propiedades = listado._propiedades_div
+        listado._propiedad_desde_div(propiedades[0])
+
+    def test_todas_propiedades_desde_div_1(self):
+        listado = zonaprop.Listado(url_listado)
+        propiedades = listado._propiedades_div
+        for p in propiedades:
+            listado._propiedad_desde_div(p)
+
+    def test_todas_propiedades_desde_div_2(self):
+        listado = zonaprop.Listado(url_listado2)
+        propiedades = listado._propiedades_div
+        for p in propiedades:
+            listado._propiedad_desde_div(p)
+
+
+class TestResultadoBusqueda(unittest.TestCase):
+    def setUp(self) -> None:
+        pass
+
+    def tearDown(self) -> None:
+        pass
+
+    def test_busqueda_true(self):
+        busqueda = zonaprop.ResultadoBusqueda(url_listado)
+        busq = busqueda._es_busqueda
+        self.assertTrue(busq)
+
+    def test_busqueda_true_2(self):
+        busqueda = zonaprop.ResultadoBusqueda(url_listado2)
+        busq = busqueda._es_busqueda
+        self.assertTrue(busq)
+
+    def test_busqueda_false(self):
+        busqueda = zonaprop.ResultadoBusqueda(url_departamento)
+        busq = busqueda._es_busqueda
+        self.assertFalse(busq)
+
+    def test_busqueda_local_true(self):
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
+        busq = busqueda._es_busqueda
+        self.assertTrue(busq)
+
+    def test_busqueda_local_false(self):
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(descarga_departamento, local=True)
+        busq = busqueda._es_busqueda
+        self.assertFalse(busq)
+
+    def test_cantidad_de_resultados(self):
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
+        self.assertEqual(busqueda.cantidad_de_resultados, 1412)
+
+    def test_cantidad_de_resultados_2(self):
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2, local=True)
+        self.assertEqual(busqueda.cantidad_de_resultados, 121)
+
+    def test_cantidad_de_paginas(self):
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
+        self.assertEqual(busqueda.cantidad_de_paginas, 71)
+
+    def test_cantidad_de_paginas_2(self):
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2, local=True)
+        self.assertEqual(busqueda.cantidad_de_paginas, 7)
+
+    def test_devolver_listado_1(self):
+        busqueda = zonaprop.ResultadoBusqueda(url_listado)
+        url_pagina1 = busqueda.listado_pagina(1)
+        correcto = ("https://www.zonaprop.com.ar/departamentos-alquiler-"
+                    "belgrano-caballito-2-ambientes-pagina-1.html")
+        self.assertEqual(url_pagina1, correcto)
+
+    def test_devolver_todos(self):
+        busqueda = zonaprop.ResultadoBusqueda(url_listado)
+        correcto = ("https://www.zonaprop.com.ar/departamentos-alquiler-"
+                    "belgrano-caballito-2-ambientes-pagina-{n}.html")
+        for n in range(1, busqueda.cantidad_de_paginas + 1):
+            url_pagina = busqueda.listado_pagina(n)
+            self.assertEqual(correcto.format(n=n), url_pagina)
