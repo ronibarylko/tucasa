@@ -18,6 +18,8 @@ descarga_departamento3 = os.path.join(directorio,
                                       "../resources/departamento3.html")
 descarga_departamento4 = os.path.join(directorio,
                                       "../resources/departamento4.html")
+descarga_departamento5 = os.path.join(directorio,
+                                      "../resources/departamento5.html")
 descarga_listado = os.path.join(directorio, "../resources/listado.html")
 descarga_listado2 = os.path.join(directorio, "../resources/listado2.html")
 
@@ -165,6 +167,11 @@ class TestPropiedad(unittest.TestCase):
         propiedad = zonaprop.Propiedad(descarga_departamento2, True)
         alquiler = propiedad.alquiler
         self.assertEqual(alquiler, "$ 26.000")
+
+    def test_alquiler_5(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento5, True)
+        alquiler = propiedad.alquiler
+        self.assertEqual(alquiler, "$ 25.000")
 
     def test_expensas_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)

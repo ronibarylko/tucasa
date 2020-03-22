@@ -64,8 +64,13 @@ class Propiedad(object):
             clave = self._procesar_clave(clave)(clave)
             valor = self._procesar_valor(clave)(dato.b.text)
             _informacion[clave] = valor
-        alquiler = self.soup.find('div', {'class': 'price-items'})
-        _informacion["Alquiler"] = alquiler.span.text
+        precios = self.soup.findAll("div", {"class": "block-price block-row"})
+        alquiler = None
+        for p in precios:
+            texto = p.find("div", {"class": "price-operation"}).text
+            if texto.upper() == 'ALQUILER':
+                alquiler = p.find('div', {'class': 'price-items'}).span.text
+        _informacion["Alquiler"] = alquiler
         expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
         if expensas is not None:
             _informacion["Expensas"] = expensas.span.text
