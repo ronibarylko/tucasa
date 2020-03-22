@@ -337,7 +337,8 @@ class TestResultadoBusqueda(unittest.TestCase):
         self.assertTrue(busq)
 
     def test_busqueda_false(self):
-        busqueda = zonaprop.ResultadoBusqueda(url_departamento)
+        with self.assertWarns(UserWarning):
+            busqueda = zonaprop.ResultadoBusqueda(url_departamento)
         busq = busqueda._es_busqueda
         self.assertFalse(busq)
 
