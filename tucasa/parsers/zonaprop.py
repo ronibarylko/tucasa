@@ -17,6 +17,7 @@ class Propiedad(object):
             response = requests.get(url).text
         else:
             response = open(url).read()
+        self.url = url
         self.soup = bs4.BeautifulSoup(response, 'html.parser')
         if not self._es_propiedad:
             warnings.warn(f"{url} no parece ser una propiedad.", UserWarning)
@@ -72,6 +73,7 @@ class Propiedad(object):
         sin_direccion = titulo.text.split(',')[1:]
         sin_espacios = [_.strip() for _ in sin_direccion]
         ubicacion = ', '.join(sin_espacios)
+        _informacion["URL"] = self.url
         _informacion["Direccion"] = direccion_limpia
         _informacion['Ubicacion'] = ubicacion
         descripcion = self.soup.find('div', {'id': 'verDatosDescripcion'})
