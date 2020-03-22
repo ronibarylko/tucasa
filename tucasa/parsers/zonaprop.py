@@ -64,12 +64,7 @@ class Propiedad(object):
             clave = self._procesar_clave(clave)(clave)
             valor = self._procesar_valor(clave)(dato.b.text)
             _informacion[clave] = valor
-        precios = self.soup.findAll("div", {"class": "block-price block-row"})
-        alquiler = None
-        for p in precios:
-            texto = p.find("div", {"class": "price-operation"}).text
-            if texto.upper() == 'ALQUILER':
-                alquiler = p.find('div', {'class': 'price-items'}).span.text
+        alquiler = self._alquiler()
         _informacion["Alquiler"] = alquiler
         expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
         if expensas is not None:
@@ -95,6 +90,23 @@ class Propiedad(object):
             caracteristicas[clave] = estas_caracteristicas
         _informacion["Caracteristicas"] = caracteristicas
         return _informacion
+
+    def _alquiler(self):
+        precios = self.soup.findAll("div", {"class": "block-price block-row"})
+        alquiler = None
+        for p in precios:
+            texto = p.find("div", {"class": "price-operation"}).text
+            if texto.upper() == 'ALQUILER':
+                alquiler = p.find('div', {'class': 'price-items'}).span.text
+                # TODO: Analizar caso de múltiple moneda. Por ahora sólo
+                # obtenemos los que están en $
+                if "$" in alquiler:
+                    alquiler = alquiler.replace("$", "")
+                    alquiler = alquiler.replace(".", "")
+                    alquiler = int(alquiler)
+                else:
+                    alquiler = None
+        return alquiler
 
     @property
     def ambientes(self) -> int:
