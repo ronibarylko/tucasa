@@ -67,7 +67,10 @@ class Propiedad(object):
         alquiler = self.soup.find('div', {'class': 'price-items'})
         _informacion["Alquiler"] = alquiler.span.text
         expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
-        _informacion["Expensas"] = expensas.span.text
+        if expensas is not None:
+            _informacion["Expensas"] = expensas.span.text
+        else:
+            _informacion["Expensas"] = None
         titulo = self.soup.find('h2', {'class': 'title-location'})
         direccion_limpia = ' '.join(titulo.b.text.split())
         sin_direccion = titulo.text.split(',')[1:]
