@@ -176,12 +176,12 @@ class TestPropiedad(unittest.TestCase):
     def test_expensas_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         expensas = propiedad.expensas
-        self.assertEqual(expensas, "$ 6.400")
+        self.assertEqual(expensas, 6400)
 
     def test_expensas_2(self):
         propiedad = zonaprop.Propiedad(descarga_departamento2, True)
         expensas = propiedad.expensas
-        self.assertEqual(expensas, "$ 8.000")
+        self.assertEqual(expensas, 8000)
 
     def test_expensas_4(self):
         propiedad = zonaprop.Propiedad(descarga_departamento4, True)

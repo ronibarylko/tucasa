@@ -66,11 +66,8 @@ class Propiedad(object):
             _informacion[clave] = valor
         alquiler = self._alquiler()
         _informacion["Alquiler"] = alquiler
-        expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
-        if expensas is not None:
-            _informacion["Expensas"] = expensas.span.text
-        else:
-            _informacion["Expensas"] = None
+        expensas = self._expensas()
+        _informacion["Expensas"] = expensas
         titulo = self.soup.find('h2', {'class': 'title-location'})
         direccion_limpia = ' '.join(titulo.b.text.split())
         sin_direccion = titulo.text.split(',')[1:]
@@ -90,6 +87,16 @@ class Propiedad(object):
             caracteristicas[clave] = estas_caracteristicas
         _informacion["Caracteristicas"] = caracteristicas
         return _informacion
+
+    def _expensas(self):
+        expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
+        if expensas is not None:
+            expensas = expensas.span.text
+            if '$' in expensas:
+                expensas = expensas.replace(".", "")
+                expensas = expensas.replace("$", "")
+                expensas = int(expensas)
+        return expensas
 
     def _alquiler(self):
         precios = self.soup.findAll("div", {"class": "block-price block-row"})
