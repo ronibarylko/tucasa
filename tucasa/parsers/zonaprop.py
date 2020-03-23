@@ -1,5 +1,6 @@
 import math
 import warnings
+from typing import List
 
 import bs4
 import requests
@@ -231,11 +232,18 @@ class Listado(object):
         return prop
 
     @staticmethod
-    def _propiedad_desde_div(div) -> str:
+    def _propiedad_desde_div(div) -> Propiedad:
         url = 'http://www.zonaprop.com.ar' + div['data-to-posting']
         prop = Propiedad(url)
         return prop
 
+    @property
+    def propiedades_url(self) -> List[str]:
+        lista_url = []
+        for div in self._propiedades_div:
+            url = 'http://www.zonaprop.com.ar' + div['data-to-posting']
+            lista_url.append(url)
+        return lista_url
 
 class ResultadoBusqueda(object):
     def __init__(self, url: str, local=False):

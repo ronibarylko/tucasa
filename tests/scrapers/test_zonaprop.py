@@ -332,6 +332,21 @@ class TestListado(unittest.TestCase):
         for p in propiedades:
             listado._propiedad_desde_div(p)
 
+    def test_propiedades_url(self):
+        listado = zonaprop.Listado(descarga_listado, local=True)
+        lista_url = listado.propiedades_url
+        self.assertEqual(len(lista_url), 15)
+
+    def test_propiedades_url_2(self):
+        listado = zonaprop.Listado(descarga_listado2, local=True)
+        lista_url = listado.propiedades_url
+        self.assertEqual(len(lista_url), 20)
+
+    def test_una_propiedad_url(self):
+        listado = zonaprop.Listado(descarga_listado, local=True)
+        url = listado.propiedades_url[0]
+        print(url)
+        self.assertTrue(url.endswith("propiedades/sensacional-vista-a-parque-rivadavia.-amoblado.-45628502.html"))
 
 class TestResultadoBusqueda(unittest.TestCase):
     def setUp(self) -> None:
