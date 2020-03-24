@@ -17,6 +17,8 @@ pandas = "*"
 numpy = "*"
 matplotlib = "*"
 click = "*"
+googlemaps = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.7"
