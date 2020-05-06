@@ -1,3 +1,4 @@
+from collections import defaultdict
 import math
 import warnings
 from typing import List
@@ -36,18 +37,20 @@ class Propiedad(object):
                 anios = int(entrada)
             return anios
 
-        self._procesar_valor_conocidas = {}
-        self._procesar_valor_conocidas['Ambientes'] = lambda x: int(x)
-        self._procesar_valor_conocidas['Baños'] = lambda x: int(x)
-        self._procesar_valor_conocidas['Dormitorios'] = lambda x: int(x)
-        self._procesar_valor_conocidas['Superficie total'] = quitar_m2
-        self._procesar_valor_conocidas['Superficie cubierta'] = quitar_m2
-        self._procesar_valor_conocidas['Antigüedad'] = antiguedad
+        # Esto no parece muy lindo, porque es un lambda a la función identidad
+        # que no existe como builtin.
+        self._procesar_valor = defaultdict(lambda: lambda x: x)
+        self._procesar_valor['Ambientes'] = lambda x: int(x)
+        self._procesar_valor['Baños'] = lambda x: int(x)
+        self._procesar_valor['Dormitorios'] = lambda x: int(x)
+        self._procesar_valor['Superficie total'] = quitar_m2
+        self._procesar_valor['Superficie cubierta'] = quitar_m2
+        self._procesar_valor['Antigüedad'] = antiguedad
 
-        self._procesar_clave_conocidas = {}
-        self._procesar_clave_conocidas['Baño'] = lambda x: x + "s"
-        self._procesar_clave_conocidas['Ambiente'] = lambda x: x + "s"
-        self._procesar_clave_conocidas['Dormitorio'] = lambda x: x + "s"
+        self._procesar_clave = defaultdict(lambda: lambda x: x)
+        self._procesar_clave['Baño'] = lambda x: x + "s"
+        self._procesar_clave['Ambiente'] = lambda x: x + "s"
+        self._procesar_clave['Dormitorio'] = lambda x: x + "s"
 
         self._informacion = {}
 
@@ -62,8 +65,8 @@ class Propiedad(object):
         _informacion = {}
         for dato in datos:
             clave = dato.span.text
-            clave = self._procesar_clave(clave)(clave)
-            valor = self._procesar_valor(clave)(dato.b.text)
+            clave = self._procesar_clave[clave](clave)
+            valor = self._procesar_valor[clave](dato.b.text)
             _informacion[clave] = valor
         alquiler = self._alquiler()
         _informacion["Alquiler"] = alquiler
@@ -191,20 +194,6 @@ class Propiedad(object):
     def ubicacion_mapa(self):
         # TODO: Extraer ubicación desde el mapa
         raise NotImplementedError
-
-    def _procesar_valor(self, clave):
-        try:
-            funcion = self._procesar_valor_conocidas[clave]
-        except KeyError:
-            funcion = lambda x: x
-        return funcion
-
-    def _procesar_clave(self, clave):
-        try:
-            funcion = self._procesar_clave_conocidas[clave]
-        except KeyError:
-            funcion = lambda x: x
-        return funcion
 
 
 class Listado(object):
