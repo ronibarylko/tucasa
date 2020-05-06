@@ -71,6 +71,8 @@ class Propiedad(object):
         _informacion["Expensas"] = expensas
         titulo = self.soup.find('h2', {'class': 'title-location'})
         direccion_limpia = ' '.join(titulo.b.text.split())
+        # Quitar la información del barrio que a veces viene duplicada
+        direccion_limpia = direccion_limpia.split(',')[0]
         sin_direccion = titulo.text.split(',')[1:]
         sin_espacios = [_.strip() for _ in sin_direccion]
         ubicacion = ', '.join(sin_espacios)

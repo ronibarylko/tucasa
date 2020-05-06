@@ -20,6 +20,10 @@ descarga_departamento4 = os.path.join(directorio,
                                       "../resources/departamento4.html")
 descarga_departamento5 = os.path.join(directorio,
                                       "../resources/departamento5.html")
+descarga_departamento6 = os.path.join(directorio,
+                                      "../resources/departamento6.html")
+descarga_departamento7 = os.path.join(directorio,
+                                      "../resources/departamento7.html")
 descarga_listado = os.path.join(directorio, "../resources/listado.html")
 descarga_listado2 = os.path.join(directorio, "../resources/listado2.html")
 
@@ -202,6 +206,16 @@ class TestPropiedad(unittest.TestCase):
         propiedad = zonaprop.Propiedad(descarga_departamento3, True)
         direccion = propiedad.direccion
         self.assertEqual(direccion, "Teodoro Garcia al 2100")
+
+    def test_direccion_6(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento6, True)
+        direccion = propiedad.direccion
+        self.assertEqual(direccion, "Av. Luis María Campos 1308")
+
+    def test_direccion_7(self):
+        propiedad = zonaprop.Propiedad(descarga_departamento7, True)
+        direccion = propiedad.direccion
+        self.assertEqual(direccion, "Olazabal 2580")
 
     def test_ubicacion_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
