@@ -17,6 +17,8 @@ class Distancias(object):
 
     def tiempo(self, origen: str, destino: str, modo: str = "*",
                buscar=True) -> float:
+        origen = self._normalizar_direccion(origen)
+        destino = self._normalizar_direccion(destino)
         mascara_origen = self._mascara_direccion("Origen", origen)
         mascara_destino = self._mascara_direccion("Destino", destino)
         mascara_modo = self._mascara_modo(modo)
@@ -56,8 +58,9 @@ class Distancias(object):
         ciudad = ", Buenos Aires, Argentina"
         origen_completo = origen + ciudad
         destino_completo = destino + ciudad
+        # TODO: Este hack es medio bobo para la fecha.
         recorrido = self.gmaps.directions(origen_completo, destino_completo,
-                                          modo)
+                                          modo, departure_time=pd.Timestamp("2020-06-03 09:22"))
         return math.ceil(recorrido[0]['legs'][0]['duration']['value'] / 60)
 
     def _agregar(self, origen, destino, modo, tiempo):
@@ -70,3 +73,31 @@ class Distancias(object):
         if archivo_salida is None:
             archivo_salida = self.archivo
         self.dataframe.to_csv(archivo_salida, index=False)
+
+    @staticmethod
+    def _normalizar_direccion(direccion):
+        direccion = Distancias._normalizar_conector(direccion)
+        direccion = Distancias._normalizar_altura(direccion)
+        return direccion
+
+    @staticmethod
+    def _normalizar_altura(direccion):
+        # Redondear altura (si existe)
+        direccion = direccion.split(" ")
+        altura = direccion[-1]
+        try:
+            print(altura)
+            print(int(altura))
+            altura = int(altura)
+            altura = altura // 100 * 100 + 1
+            direccion[-1] = str(altura)
+        except ValueError:
+            pass
+        direccion = " ".join(direccion)
+        return direccion
+
+    @staticmethod
+    def _normalizar_conector(direccion):
+        # Remover ' al ' de la altura
+        direccion = direccion.replace(" al ", " ")
+        return direccion
