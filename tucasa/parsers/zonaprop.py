@@ -85,7 +85,9 @@ class Propiedad(object):
         descripcion = self.soup.find('div', {'id': 'verDatosDescripcion'})
         _informacion["Descripcion"] = descripcion.text
         caracteristicas = {}
-        general_section = self.soup.findAll('section', {'class': 'general-section article-section'})
+        general_section = self.soup.findAll(
+            'section',
+            {'class': 'general-section article-section'})
         for sec in general_section:
             clave = sec.div.text.strip()
             esta_lista = sec.findAll('li')
@@ -217,7 +219,7 @@ class Listado(object):
 
     @property
     def _propiedades_div(self) -> list:
-        # TODO: Manejar de alguna manera los emprendimientos. Los estamos ignorando.
+        # TODO: Manejar los emprendimientos. Los estamos ignorando.
         container = self.soup.find('div', {'class': 'list-card-container'})
         prop = container.findAll('div', {'data-posting-type': 'PROPERTY'})
         return prop
@@ -236,13 +238,15 @@ class Listado(object):
             lista_url.append(url)
         return lista_url
 
+
 class ResultadoBusqueda(object):
     def __init__(self, url: str, local=False):
         self.url = url
         if not local:
             response = requests.get(url).text
         else:
-            warnings.warn("No están habilitadas todas las opciones para búsquedas descargadas")
+            warnings.warn(("No están habilitadas todas las opciones"
+                           "para búsquedas descargadas"))
             response = open(url).read()
         self.soup = bs4.BeautifulSoup(response, 'html.parser')
         if not self._es_busqueda:

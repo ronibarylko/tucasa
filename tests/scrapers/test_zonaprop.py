@@ -235,19 +235,25 @@ class TestPropiedad(unittest.TestCase):
     def test_descripcion_1(self):
         propiedad = zonaprop.Propiedad(descarga_departamento, True)
         descripcion = propiedad.descripcion
-        self.assertTrue(descripcion.startswith("Departamento de categoría con impresionante vista al Parque"))
-        self.assertTrue(descripcion.endswith("Vivanco Negocios Inmobiliarios desde Sumaprop."))
+        comienzo = ("Departamento de categoría con impresionante"
+                    " vista al Parque")
+        self.assertTrue(descripcion.startswith(comienzo))
+        fin = "Vivanco Negocios Inmobiliarios desde Sumaprop."
+        self.assertTrue(descripcion.endswith(fin))
 
     def test_descripcion_2(self):
         propiedad = zonaprop.Propiedad(descarga_departamento2, True)
         descripcion = propiedad.descripcion
-        self.assertTrue(descripcion.startswith("54 metros cuadrados con balcón en edificio"))
-        self.assertTrue(descripcion.endswith("EN EL EDIFICIO Cristina Ver datos 8444 ofic Ver datos"))
+        comienzo = "54 metros cuadrados con balcón en edificio"
+        self.assertTrue(descripcion.startswith(comienzo))
+        fin = "EN EL EDIFICIO Cristina Ver datos 8444 ofic Ver datos"
+        self.assertTrue(descripcion.endswith(fin))
 
     def test_descripcion_3(self):
         propiedad = zonaprop.Propiedad(descarga_departamento3, True)
         descripcion = propiedad.descripcion
-        self.assertTrue(descripcion.startswith("Hermoso piso en alquiler en pleno Belgrano"))
+        comienzo = "Hermoso piso en alquiler en pleno Belgrano"
+        self.assertTrue(descripcion.startswith(comienzo))
         self.assertTrue(descripcion.endswith("SEGUINOS EN FACEBOOK"))
 
     def test_contacto(self):
@@ -359,7 +365,10 @@ class TestListado(unittest.TestCase):
     def test_una_propiedad_url(self):
         listado = zonaprop.Listado(descarga_listado, local=True)
         url = listado.propiedades_url[0]
-        self.assertTrue(url.endswith("propiedades/sensacional-vista-a-parque-rivadavia.-amoblado.-45628502.html"))
+        fin = ("propiedades/sensacional-vista-a-parque-rivadavia.-"
+               "amoblado.-45628502.html")
+        self.assertTrue(url.endswith(fin))
+
 
 class TestResultadoBusqueda(unittest.TestCase):
     def setUp(self) -> None:
@@ -392,7 +401,8 @@ class TestResultadoBusqueda(unittest.TestCase):
 
     def test_busqueda_local_false(self):
         with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_departamento, local=True)
+            busqueda = zonaprop.ResultadoBusqueda(descarga_departamento,
+                                                  local=True)
         busq = busqueda._es_busqueda
         self.assertFalse(busq)
 
@@ -403,7 +413,8 @@ class TestResultadoBusqueda(unittest.TestCase):
 
     def test_cantidad_de_resultados_2(self):
         with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2, local=True)
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2,
+                                                  local=True)
         self.assertEqual(busqueda.cantidad_de_resultados, 121)
 
     def test_cantidad_de_paginas(self):
@@ -413,7 +424,8 @@ class TestResultadoBusqueda(unittest.TestCase):
 
     def test_cantidad_de_paginas_2(self):
         with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2, local=True)
+            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2,
+                                                  local=True)
         self.assertEqual(busqueda.cantidad_de_paginas, 7)
 
     def test_devolver_listado_1(self):
