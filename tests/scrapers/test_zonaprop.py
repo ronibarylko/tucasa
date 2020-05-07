@@ -359,7 +359,6 @@ class TestListado(unittest.TestCase):
     def test_una_propiedad_url(self):
         listado = zonaprop.Listado(descarga_listado, local=True)
         url = listado.propiedades_url[0]
-        print(url)
         self.assertTrue(url.endswith("propiedades/sensacional-vista-a-parque-rivadavia.-amoblado.-45628502.html"))
 
 class TestResultadoBusqueda(unittest.TestCase):

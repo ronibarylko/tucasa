@@ -86,8 +86,6 @@ class Distancias(object):
         direccion = direccion.split(" ")
         altura = direccion[-1]
         try:
-            print(altura)
-            print(int(altura))
             altura = int(altura)
             altura = altura // 100 * 100 + 1
             direccion[-1] = str(altura)
