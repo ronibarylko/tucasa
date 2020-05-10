@@ -2,6 +2,7 @@ from collections import defaultdict
 import math
 import warnings
 from typing import List
+import logging
 
 import bs4
 import requests
@@ -15,9 +16,11 @@ class Propiedad(object):
     """
 
     def __init__(self, url: str, local: bool = False):
+        self.logger = logging.getLogger(__name__)
         if not local:
             response = requests.get(url).text
         else:
+            self.logger.debug(f"Cargando archivo {url}")
             response = open(url).read()
         self.url = url
         self.soup = bs4.BeautifulSoup(response, 'html.parser')
@@ -124,7 +127,7 @@ class Propiedad(object):
         return alquiler
 
     # No me gusta mucho esto, pero no se me ocurre otra forma de acceso rápido.
-    # ¿con casefold?
+    # ¿con casefold? Tampoco quiero heredar de `dict`
     @property
     def ambientes(self) -> int:
         return self.informacion["Ambientes"]
@@ -206,9 +209,11 @@ class Listado(object):
     """
 
     def __init__(self, url: str, local=False):
+        self.logger = logging.getLogger(__name__)
         if not local:
             response = requests.get(url).text
         else:
+            self.logger.debug(f"Cargando archivo {url}")
             response = open(url).read()
         self.soup = bs4.BeautifulSoup(response, 'html.parser')
         if not self._es_listado:
@@ -226,12 +231,6 @@ class Listado(object):
         prop = container.findAll('div', {'data-posting-type': 'PROPERTY'})
         return prop
 
-    @staticmethod
-    def _propiedad_desde_div(div) -> Propiedad:
-        url = 'http://www.zonaprop.com.ar' + div['data-to-posting']
-        prop = Propiedad(url)
-        return prop
-
     @property
     def propiedades_url(self) -> List[str]:
         lista_url = []
@@ -243,12 +242,14 @@ class Listado(object):
 
 class ResultadoBusqueda(object):
     def __init__(self, url: str, local=False):
+        self.logger = logging.getLogger(__name__)
         self.url = url
         if not local:
             response = requests.get(url).text
         else:
-            warnings.warn(("No están habilitadas todas las opciones"
-                           "para búsquedas descargadas"))
+            self.logger.warning(("No están habilitadas todas las opciones"
+                                 "para búsquedas descargadas"))
+            self.logger.debug(f"Cargando archivo {url}")
             response = open(url).read()
         self.soup = bs4.BeautifulSoup(response, 'html.parser')
         if not self._es_busqueda:
@@ -266,6 +267,8 @@ class ResultadoBusqueda(object):
         cantidad = int(cantidad)
         return cantidad
 
+    # TODO: Pythonizar este código: claramente tiene que ser un iterable
+    # (ver uso en `obtener_departamentos.py`)
     def listado_pagina(self, n: int) -> str:
         """
         A partir de la url de la búsqueda, genera el listado de la página `n`.

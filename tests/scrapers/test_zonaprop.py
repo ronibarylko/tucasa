@@ -330,28 +330,6 @@ class TestListado(unittest.TestCase):
         propiedades = listado._propiedades_div
         self.assertEqual(len(propiedades), 20)
 
-    def test_propiedad_desde_div_1(self):
-        listado = zonaprop.Listado(url_listado)
-        propiedades = listado._propiedades_div
-        listado._propiedad_desde_div(propiedades[0])
-
-    def test_propiedad_desde_div_2(self):
-        listado = zonaprop.Listado(url_listado2)
-        propiedades = listado._propiedades_div
-        listado._propiedad_desde_div(propiedades[0])
-
-    def test_todas_propiedades_desde_div_1(self):
-        listado = zonaprop.Listado(url_listado)
-        propiedades = listado._propiedades_div
-        for p in propiedades:
-            listado._propiedad_desde_div(p)
-
-    def test_todas_propiedades_desde_div_2(self):
-        listado = zonaprop.Listado(url_listado2)
-        propiedades = listado._propiedades_div
-        for p in propiedades:
-            listado._propiedad_desde_div(p)
-
     def test_propiedades_url(self):
         listado = zonaprop.Listado(descarga_listado, local=True)
         lista_url = listado.propiedades_url
@@ -394,8 +372,7 @@ class TestResultadoBusqueda(unittest.TestCase):
         self.assertFalse(busq)
 
     def test_busqueda_local_true(self):
-        with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
+        busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
         busq = busqueda._es_busqueda
         self.assertTrue(busq)
 
@@ -407,25 +384,19 @@ class TestResultadoBusqueda(unittest.TestCase):
         self.assertFalse(busq)
 
     def test_cantidad_de_resultados(self):
-        with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
+        busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
         self.assertEqual(busqueda.cantidad_de_resultados, 1412)
 
     def test_cantidad_de_resultados_2(self):
-        with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2,
-                                                  local=True)
+        busqueda = zonaprop.ResultadoBusqueda(descarga_listado2, local=True)
         self.assertEqual(busqueda.cantidad_de_resultados, 121)
 
     def test_cantidad_de_paginas(self):
-        with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
+        busqueda = zonaprop.ResultadoBusqueda(descarga_listado, local=True)
         self.assertEqual(busqueda.cantidad_de_paginas, 71)
 
     def test_cantidad_de_paginas_2(self):
-        with self.assertWarns(UserWarning):
-            busqueda = zonaprop.ResultadoBusqueda(descarga_listado2,
-                                                  local=True)
+        busqueda = zonaprop.ResultadoBusqueda(descarga_listado2, local=True)
         self.assertEqual(busqueda.cantidad_de_paginas, 7)
 
     def test_devolver_listado_1(self):
