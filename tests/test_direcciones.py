@@ -27,8 +27,9 @@ class TestDirecciones(unittest.TestCase):
         self.assertListEqual(list(distancia.dataframe.columns), lista_correcta)
 
     def test_construccion_falla(self) -> None:
-        with self.assertRaises(FileNotFoundError):
-            direcciones.Distancias(base_de_datos_no_existe)
+        distancia = direcciones.Distancias(base_de_datos_no_existe)
+        lista_correcta = ["Origen", "Destino", "Modo", "Horario", "Tiempo"]
+        self.assertListEqual(list(distancia.dataframe.columns), lista_correcta)
 
     def test_distancias_no_existe(self) -> None:
         distancia = direcciones.Distancias(base_de_datos)
