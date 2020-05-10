@@ -52,8 +52,7 @@ class TestDirecciones(unittest.TestCase):
         origen = "Gorriti 4000"
         destino = "El Salvador 5218"
         modo = "*"
-        with self.assertWarns(UserWarning):
-            tiempo = distancia.tiempo(origen, destino, modo, buscar=False)
+        tiempo = distancia.tiempo(origen, destino, modo, buscar=False)
         self.assertAlmostEqual(15.44, tiempo)
 
     def test_distancia_repetido(self) -> None:
@@ -61,8 +60,7 @@ class TestDirecciones(unittest.TestCase):
         origen = "Gorriti 4000"
         destino = "El Salvador 5218"
         modo = "walking"
-        with self.assertWarns(UserWarning):
-            tiempo = distancia.tiempo(origen, destino, modo, buscar=False)
+        tiempo = distancia.tiempo(origen, destino, modo, buscar=False)
         self.assertAlmostEqual(16.73333333333, tiempo)
 
     def test_mascara_origen_1(self) -> None:
@@ -184,6 +182,7 @@ class TestDirecciones(unittest.TestCase):
         self.assertEqual("Santa Fe 4159", direccion)
 
     def test_normalizar_direccion(self) -> None:
+        distancia = direcciones.Distancias(base_de_datos)
         direccion = "Santa Fe al 4159"
-        direccion = direcciones.Distancias._normalizar_direccion(direccion)
+        direccion = distancia._normalizar_direccion(direccion)
         self.assertEqual("Santa Fe 4101", direccion)

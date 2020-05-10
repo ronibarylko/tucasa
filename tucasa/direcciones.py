@@ -47,7 +47,7 @@ class Distancias(object):
             self.logger.debug(f"Encontrado en base de datos local")
             return resultado.item()
         else:
-            msg = (f"Viaje {origen} -> {destino} con modo {modo}"
+            msg = (f"Viaje {origen} -> {destino} con modo {modo} "
                    f"tiene {len(resultado)} entradas. Promediando.")
             self.logger.warning(msg)
             return resultado.mean()
