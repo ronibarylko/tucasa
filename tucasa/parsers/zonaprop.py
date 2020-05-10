@@ -14,7 +14,7 @@ class Propiedad(object):
     Parser de propiedades de ZonaProp
     """
 
-    def __init__(self, url: str, local=False):
+    def __init__(self, url: str, local: bool = False):
         if not local:
             response = requests.get(url).text
         else:
@@ -96,7 +96,7 @@ class Propiedad(object):
         _informacion["Caracteristicas"] = caracteristicas
         return _informacion
 
-    def _expensas(self):
+    def _expensas(self) -> int:
         expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
         if expensas is not None:
             expensas = expensas.span.text
@@ -106,7 +106,7 @@ class Propiedad(object):
                 expensas = int(expensas)
         return expensas
 
-    def _alquiler(self):
+    def _alquiler(self) -> int:
         precios = self.soup.findAll("div", {"class": "block-price block-row"})
         alquiler = None
         for p in precios:
@@ -123,6 +123,8 @@ class Propiedad(object):
                     alquiler = None
         return alquiler
 
+    # No me gusta mucho esto, pero no se me ocurre otra forma de acceso rápido.
+    # ¿con casefold?
     @property
     def ambientes(self) -> int:
         return self.informacion["Ambientes"]
@@ -189,7 +191,7 @@ class Propiedad(object):
         raise NotImplementedError
 
     @property
-    def caracteristicas(self):
+    def caracteristicas(self) -> dict:
         return self.informacion["Caracteristicas"]
 
     @property
