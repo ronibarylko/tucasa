@@ -2,7 +2,6 @@ import logging
 import warnings
 
 import bs4
-import requests
 from selenium import webdriver
 
 
@@ -11,6 +10,7 @@ class NavegacionZonaProp:
     def __init__(self, url: str, local=False):
         self.logger = logging.getLogger(__name__)
         self.url = url
+        self.id_esperado = 'BODY-LISTADO'
         self.response = self.parsear_html(self.response_url(local, url))
 
         if not self.es_mi_navegacion_esperada():
@@ -33,4 +33,4 @@ class NavegacionZonaProp:
         return open(url).read()
 
     def es_mi_navegacion_esperada(self) -> bool:
-        return self.response.body['id'].upper() == 'BODY-LISTADO'
+        return self.response.body['id'].upper() == self.id_esperado

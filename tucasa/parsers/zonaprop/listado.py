@@ -25,6 +25,3 @@ class Listado(NavegacionZonaProp):
             url = 'http://www.zonaprop.com.ar' + div['data-to-posting']
             lista_url.append(url)
         return lista_url
-
-    def navegacion(self):
-        return "listado"

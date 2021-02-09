@@ -1,9 +1,4 @@
-import logging
-import warnings
 from collections import defaultdict
-
-import bs4
-import requests
 
 from tucasa.parsers.zonaprop.navegacion_zona_prop import NavegacionZonaProp
 
@@ -14,16 +9,8 @@ class Propiedad(NavegacionZonaProp):
     """
 
     def __init__(self, url: str, local: bool = False):
-        self.logger = logging.getLogger(__name__)
-        if not local:
-            response = requests.get(url).text
-        else:
-            self.logger.debug(f"Cargando archivo {url}")
-            response = open(url).read()
-        self.url = url
-        self.soup = bs4.BeautifulSoup(response, 'html.parser')
-        if not self._es_propiedad:
-            warnings.warn(f"{url} no parece ser una propiedad.", UserWarning)
+        super().__init__(url, local)
+        self.id_esperado = 'PROPERTY'
 
         def quitar_m2(entrada: str) -> int:
             indice = entrada.find("m²")
@@ -55,14 +42,12 @@ class Propiedad(NavegacionZonaProp):
 
         self._informacion = {}
 
-    @property
-    def _es_propiedad(self) -> bool:
-        es_propiedad = self.soup.body['id'].upper() == 'PROPERTY'
-        return es_propiedad
+    def es_mi_navegacion_esperada(self) -> bool:
+        return self.response.body['id'].upper() == 'PROPERTY'
 
     @property
     def informacion(self) -> dict:
-        datos = self.soup.findAll('li', {'class': 'icon-feature'})
+        datos = self.response.findAll('li', {'class': 'icon-feature'})
         _informacion = {}
         for dato in datos:
             clave = dato.span.text
@@ -73,7 +58,7 @@ class Propiedad(NavegacionZonaProp):
         _informacion["Alquiler"] = alquiler
         expensas = self._expensas()
         _informacion["Expensas"] = expensas
-        titulo = self.soup.find('h2', {'class': 'title-location'})
+        titulo = self.response.find('h2', {'class': 'title-location'})
         direccion_limpia = ' '.join(titulo.b.text.split())
         # Quitar la información del barrio que a veces viene duplicada
         direccion_limpia = direccion_limpia.split(',')[0]
@@ -83,10 +68,10 @@ class Propiedad(NavegacionZonaProp):
         _informacion["URL"] = self.url
         _informacion["Direccion"] = direccion_limpia
         _informacion['Ubicacion'] = ubicacion
-        descripcion = self.soup.find('div', {'id': 'verDatosDescripcion'})
+        descripcion = self.response.find('div', {'id': 'verDatosDescripcion'})
         _informacion["Descripcion"] = descripcion.text
         caracteristicas = {}
-        general_section = self.soup.findAll(
+        general_section = self.response.findAll(
             'section',
             {'class': 'general-section article-section'})
         for sec in general_section:
@@ -98,7 +83,7 @@ class Propiedad(NavegacionZonaProp):
         return _informacion
 
     def _expensas(self) -> int:
-        expensas = self.soup.find('div', {'class': 'block-expensas block-row'})
+        expensas = self.response.find('div', {'class': 'block-expensas block-row'})
         if expensas is not None:
             expensas = expensas.span.text
             if '$' in expensas:
@@ -108,7 +93,7 @@ class Propiedad(NavegacionZonaProp):
         return expensas
 
     def _alquiler(self) -> int:
-        precios = self.soup.findAll("div", {"class": "block-price block-row"})
+        precios = self.response.findAll("div", {"class": "block-price block-row"})
         alquiler = None
         for p in precios:
             texto = p.find("div", {"class": "price-operation"}).text
