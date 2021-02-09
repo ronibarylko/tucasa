@@ -1,16 +1,14 @@
-from collections import defaultdict
-import math
-import warnings
-from typing import List
 import logging
+import warnings
+from collections import defaultdict
 
 import bs4
 import requests
 
-RESULTADOS_POR_PAGINA = 20
+from tucasa.parsers.zonaprop.navegacion_zona_prop import NavegacionZonaProp
 
 
-class Propiedad(object):
+class Propiedad(NavegacionZonaProp):
     """
     Parser de propiedades de ZonaProp
     """
@@ -201,84 +199,3 @@ class Propiedad(object):
     def ubicacion_mapa(self):
         # TODO: Extraer ubicación desde el mapa
         raise NotImplementedError
-
-
-class Listado(object):
-    """
-    Parser de listado de propiedades de ZonaProp
-    """
-
-    def __init__(self, url: str, local=False):
-        self.logger = logging.getLogger(__name__)
-        if not local:
-            response = requests.get(url).text
-        else:
-            self.logger.debug(f"Cargando archivo {url}")
-            response = open(url).read()
-        self.soup = bs4.BeautifulSoup(response, 'html.parser')
-        if not self._es_listado:
-            warnings.warn(f"{url} no parece ser un listado.", UserWarning)
-
-    @property
-    def _es_listado(self) -> bool:
-        es_listado = self.soup.body['id'].upper() == 'BODY-LISTADO'
-        return es_listado
-
-    @property
-    def _propiedades_div(self) -> list:
-        # TODO: Manejar los emprendimientos. Los estamos ignorando.
-        container = self.soup.find('div', {'class': 'list-card-container'})
-        prop = container.findAll('div', {'data-posting-type': 'PROPERTY'})
-        return prop
-
-    @property
-    def propiedades_url(self) -> List[str]:
-        lista_url = []
-        for div in self._propiedades_div:
-            url = 'http://www.zonaprop.com.ar' + div['data-to-posting']
-            lista_url.append(url)
-        return lista_url
-
-
-class ResultadoBusqueda(object):
-    def __init__(self, url: str, local=False):
-        self.logger = logging.getLogger(__name__)
-        self.url = url
-        if not local:
-            response = requests.get(url).text
-        else:
-            self.logger.warning(("No están habilitadas todas las opciones"
-                                 "para búsquedas descargadas"))
-            self.logger.debug(f"Cargando archivo {url}")
-            response = open(url).read()
-        self.soup = bs4.BeautifulSoup(response, 'html.parser')
-        if not self._es_busqueda:
-            warnings.warn(f"{url} no parece ser una búsqueda.", UserWarning)
-
-    @property
-    def _es_busqueda(self):
-        #TODORONI no puedo obtener "id" de body
-        return True
-        #es_busqueda = self.soup.body['id'].upper() == 'BODY-LISTADO'
-        #return es_busqueda
-
-    @property
-    def cantidad_de_resultados(self) -> int:
-        titulo = self.soup.find('h1', {'class': 'list-result-title'})
-        cantidad = titulo.b.text.replace('.', '')
-        cantidad = int(cantidad)
-        return cantidad
-
-    # TODO: Pythonizar este código: claramente tiene que ser un iterable
-    # (ver uso en `obtener_departamentos.py`)
-    def listado_pagina(self, n: int) -> str:
-        """
-        A partir de la url de la búsqueda, genera el listado de la página `n`.
-        """
-        url_pagina = self.url.replace('.html', f'-pagina-{n}.html')
-        return url_pagina
-
-    @property
-    def cantidad_de_paginas(self) -> int:
-        numero_de_paginas = math.ceil(self.cantidad_de_resultados / RESULTADOS_POR_PAGINA)
-        return numero_de_paginas
