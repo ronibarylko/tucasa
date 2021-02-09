@@ -257,8 +257,10 @@ class ResultadoBusqueda(object):
 
     @property
     def _es_busqueda(self):
-        es_busqueda = self.soup.body['id'].upper() == 'BODY-LISTADO'
-        return es_busqueda
+        #TODORONI no puedo obtener "id" de body
+        return True
+        #es_busqueda = self.soup.body['id'].upper() == 'BODY-LISTADO'
+        #return es_busqueda
 
     @property
     def cantidad_de_resultados(self) -> int:

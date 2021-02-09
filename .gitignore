@@ -1,3 +1,2 @@
-.coverage
-*~
-*.pyc
+.idea
+*__pycache__
