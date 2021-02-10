@@ -10,7 +10,6 @@ class Propiedad(NavegacionZonaProp):
 
     def __init__(self, url: str, local: bool = False):
         super().__init__(url, local)
-        self.id_esperado = 'PROPERTY'
 
         def quitar_m2(entrada: str) -> int:
             indice = entrada.find("m²")
@@ -111,76 +110,59 @@ class Propiedad(NavegacionZonaProp):
 
     # No me gusta mucho esto, pero no se me ocurre otra forma de acceso rápido.
     # ¿con casefold? Tampoco quiero heredar de `dict`
-    @property
+
     def ambientes(self) -> int:
         return self.informacion["Ambientes"]
 
-    @property
     def antiguedad(self) -> int:
         return self.informacion["Antigüedad"]
 
-    @property
     def superficie_total(self) -> int:
         return self.informacion["Superficie total"]
 
-    @property
     def superficie_cubierta(self) -> int:
         return self.informacion["Superficie cubierta"]
 
-    @property
     def banios(self) -> int:
         return self.informacion["Baños"]
 
-    @property
     def dormitorios(self) -> int:
         return self.informacion["Dormitorios"]
 
-    @property
     def disposicion(self) -> int:
         return self.informacion["Disposición"]
 
-    @property
     def orientacion(self) -> int:
         return self.informacion["Orientación"]
 
-    @property
     def estado(self) -> int:
         return self.informacion["Estado del inmueble"]
 
-    @property
     def luminosidad(self) -> int:
         return self.informacion["Luminosidad"]
 
-    @property
     def alquiler(self) -> int:
         return self.informacion["Alquiler"]
 
-    @property
     def expensas(self) -> int:
         return self.informacion["Expensas"]
 
-    @property
     def direccion(self) -> str:
         return self.informacion["Direccion"]
 
-    @property
     def ubicacion(self) -> str:
         return self.informacion["Ubicacion"]
 
-    @property
     def descripcion(self) -> str:
         return self.informacion["Descripcion"]
 
-    @property
     def contacto(self):
         # TODO: Extraer contacto (necesita cargar JS seguramente)
         raise NotImplementedError
 
-    @property
     def caracteristicas(self) -> dict:
         return self.informacion["Caracteristicas"]
 
-    @property
     def ubicacion_mapa(self):
         # TODO: Extraer ubicación desde el mapa
         raise NotImplementedError
