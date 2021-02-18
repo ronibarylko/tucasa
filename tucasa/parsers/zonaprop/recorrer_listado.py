@@ -1,14 +1,9 @@
-import logging
-import warnings
 from typing import List
-
-import bs4
-import requests
 
 from tucasa.parsers.zonaprop.navegacion_zona_prop import NavegacionZonaProp
 
 
-class Listado(NavegacionZonaProp):
+class RecorrerListado(NavegacionZonaProp):
     """
     Parser de listado de propiedades de ZonaProp
     """

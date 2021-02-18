@@ -4,7 +4,7 @@ import click
 import pandas as pd
 from tqdm import tqdm
 
-from tucasa.parsers.zonaprop import Propiedad, Listado, BusquedaInicial
+from tucasa.parsers.zonaprop import ObtenerPropiedad, RecorrerListado, BusquedaInicial
 
 
 @click.command()
@@ -28,10 +28,10 @@ def obtener_propiedades(paginas, respuesta):
     for n in tqdm(range(1, paginas + 1), desc='Página'):
         url_pagina = respuesta.listado_pagina(n)
         logging.debug(f"Parseando página {url_pagina}")
-        listado = Listado(url_pagina)
+        listado = RecorrerListado(url_pagina)
         for url in tqdm(listado.propiedades_url(), desc='Propiedad', leave=False):
             logging.debug(f"Parseando propiedad {url}")
-            propiedad = Propiedad(url)
+            propiedad = ObtenerPropiedad(url)
             propiedades.append(propiedad)
 
     return propiedades

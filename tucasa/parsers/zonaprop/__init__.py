@@ -1,3 +1,3 @@
 from .busqueda_inicial import BusquedaInicial
-from .listado import Listado
-from .propiedad import Propiedad
+from .recorrer_listado import RecorrerListado
+from .obtener_propiedad import ObtenerPropiedad
