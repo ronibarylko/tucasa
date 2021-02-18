@@ -1,3 +1,5 @@
+import re
+
 from tucasa.parsers.zonaprop.navegacion_zona_prop import NavegacionZonaProp
 from tucasa.propiedad import Propiedad
 
@@ -29,7 +31,7 @@ class ObtenerPropiedad(NavegacionZonaProp):
         titulo = self.response.find('h2', {'class': 'title-location'})
         _informacion = {"alquiler": self._alquiler(),
                         "expensas": self._expensas(),
-                        "url": self.url,
+                        #"url": self.url,
                         "direccion": self._direccion(titulo),
                         "ubicacion": self._ubicacion(titulo),
                         "descripcion": None#self._descripcion() TODORONIarreglar
@@ -37,11 +39,13 @@ class ObtenerPropiedad(NavegacionZonaProp):
 
         datos = self.response.findAll('li', {'class': 'icon-feature'})
         for dato in datos:
-            _informacion[self._dato2clave(dato)] = self._procesar_valor[self._dato2clave(dato)](dato.text)
+            clave = self._dato2clave(dato)
+            if clave in self._procesar_valor:
+                _informacion[self._dato2clave(dato)] = self._procesar_valor[self._dato2clave(dato)](dato.text)
 
-        caracteristicas = self._caracteristicas()
+        _informacion["caracteristicas"] = self._caracteristicas()
+        _informacion["diccionario"] = _informacion.copy()
 
-        _informacion["Caracteristicas"] = caracteristicas
         return Propiedad(**_informacion)
 
     def _dato2clave(self, dato):

@@ -17,9 +17,9 @@ def main(url, archivo_salida):
     paginas = respuesta_inicial.cantidad_de_paginas()
     print(f"Encontré {resultados} resultados en {paginas} páginas.")
 
-    propiedades = obtener_propiedades(paginas, respuesta_inicial)
-
-    guardar_en_archivo(archivo_salida, propiedades)
+    propiedades_as_dict = [p.diccionario() for p in obtener_propiedades(paginas, respuesta_inicial)]
+    df = pd.DataFrame(propiedades_as_dict)
+    df.to_csv(archivo_salida, index=False)
 
 
 def obtener_propiedades(paginas, respuesta):
@@ -32,15 +32,9 @@ def obtener_propiedades(paginas, respuesta):
         for url in tqdm(listado.propiedades_url(), desc='Propiedad', leave=False):
             logging.debug(f"Parseando propiedad {url}")
             propiedad = ObtenerPropiedad(url)
-            propiedades.append(propiedad)
+            propiedades.append(propiedad.propiedad())
 
     return propiedades
-
-
-def guardar_en_archivo(archivo_salida, propiedades):
-    info = [p.informacion for p in propiedades]
-    df = pd.DataFrame(info)
-    df.to_csv(archivo_salida)
 
 
 if __name__ == '__main__':

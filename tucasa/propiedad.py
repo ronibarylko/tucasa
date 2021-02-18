@@ -1,24 +1,23 @@
 class Propiedad:
 
-    def __init__(self, ambientes, antiguedad, superficie_total, superficie_cubierta, banios, dormitorios, disposicion,
-                 orientacion, estado, luminosidad, alquiler, expensas, direccion, ubicacion, descripcion,
-                 caracteristicas):
-        self._ambientes = ambientes
+    def __init__(self, ambiente, stotal, scubierta, bano, dormitorio, alquiler, expensas, direccion,
+                 ubicacion, descripcion, caracteristicas, diccionario, antiguedad=None):
+        self._ambientes = ambiente
         self._antiguedad = antiguedad
-        self._superficie_total = superficie_total
-        self._superficie_cubierta = superficie_cubierta
-        self._banios = banios
-        self._dormitorios = dormitorios
-        self._disposicion = disposicion
-        self._orientacion = orientacion
-        self._estado = estado
-        self._luminosidad = luminosidad
+        self._superficie_total = stotal
+        self._superficie_cubierta = scubierta
+        self._banios = bano
+        self._dormitorios = dormitorio
         self._alquiler = alquiler
         self._expensas = expensas
         self._direccion = direccion
         self._ubicacion = ubicacion
         self._descripcion = descripcion
         self._caracteristicas = caracteristicas
+        self._diccionario = diccionario #TODORONI horrible
+
+    def diccionario(self):
+        return self._diccionario
 
     def ambientes(self) -> int:
         return self._ambientes
@@ -37,18 +36,6 @@ class Propiedad:
 
     def dormitorios(self) -> int:
         return self._dormitorios
-
-    def disposicion(self) -> int:
-        return self._disposicion
-
-    def orientacion(self) -> int:
-        return self._orientacion
-
-    def estado(self) -> int:
-        return self._estado
-
-    def luminosidad(self) -> int:
-        return self._luminosidad
 
     def alquiler(self) -> int:
         return self._alquiler
