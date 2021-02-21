@@ -31,8 +31,11 @@ def obtener_propiedades(paginas, respuesta):
         listado = RecorrerListado(url_pagina)
         for url in tqdm(listado.propiedades_url(), desc='Propiedad', leave=False):
             logging.debug(f"Parseando propiedad {url}")
-            propiedad = ObtenerPropiedad(url)
-            propiedades.append(propiedad.propiedad())
+            try:
+                propiedad = ObtenerPropiedad(url)
+                propiedades.append(propiedad.propiedad())
+            except Exception as e:
+                print("No pude hacerlo con {} por {}".format(url, e))
 
     return propiedades
 

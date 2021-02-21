@@ -27,5 +27,4 @@ class BusquedaInicial(NavegacionZonaProp):
         return url_pagina
 
     def cantidad_de_paginas(self) -> int:
-        numero_de_paginas = math.ceil(self.cantidad_de_resultados() / RESULTADOS_POR_PAGINA)
-        return numero_de_paginas
+        return math.ceil(self.cantidad_de_resultados() / RESULTADOS_POR_PAGINA)

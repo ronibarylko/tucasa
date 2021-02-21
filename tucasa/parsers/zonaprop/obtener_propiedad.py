@@ -17,7 +17,7 @@ class ObtenerPropiedad(NavegacionZonaProp):
                                 'dormitorio': lambda x: int(x[:x.find("Dormitorio")]),
                                 'stotal': lambda x: int(x[:x.find("m²")]),
                                 'scubierta': lambda x: int(x[:x.find("m²")]),
-                                'antiguedad': lambda x: 0 if x == "A estrenar" else int(x[:x.find("Antigüedad")])}
+                                'antiguedad': lambda x: 0 if "A estrenar" in x else int(x[:x.find("Antigüedad")])}
 
         self._propiedad = self._crear_propiedad()
 
@@ -31,10 +31,10 @@ class ObtenerPropiedad(NavegacionZonaProp):
         titulo = self.response.find('h2', {'class': 'title-location'})
         _informacion = {"alquiler": self._alquiler(),
                         "expensas": self._expensas(),
-                        #"url": self.url,
+                        "url": self.url,
                         "direccion": self._direccion(titulo),
                         "ubicacion": self._ubicacion(titulo),
-                        "descripcion": None#self._descripcion() TODORONIarreglar
+                        "descripcion": self._descripcion()
                         }
 
         datos = self.response.findAll('li', {'class': 'icon-feature'})
@@ -46,7 +46,13 @@ class ObtenerPropiedad(NavegacionZonaProp):
         _informacion["caracteristicas"] = self._caracteristicas()
         _informacion["diccionario"] = _informacion.copy()
 
+        if self._es_departamento(_informacion):
+            _informacion["scubierta"] = _informacion["stotal"]
+
         return Propiedad(**_informacion)
+
+    def _es_departamento(self, _informacion):
+        return not _informacion.get("scubierta")
 
     def _dato2clave(self, dato):
         return dato.find("i").attrs["class"][0].split("icon-")[1]
@@ -63,7 +69,7 @@ class ObtenerPropiedad(NavegacionZonaProp):
         return caracteristicas
 
     def _descripcion(self):
-        return self.response.find('div', {'id': 'verDatosDescripcion'}).text
+        return self.response.find('div', {'id': 'reactDescription'}).text
 
     def _ubicacion(self, titulo):
         return ', '.join([w.strip() for w in (titulo.text.split(',')[1:])])
