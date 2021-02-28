@@ -44,7 +44,6 @@ class ObtenerPropiedad(NavegacionZonaProp):
                 _informacion[self._dato2clave(dato)] = self._procesar_valor[self._dato2clave(dato)](dato.text)
 
         _informacion["caracteristicas"] = self._caracteristicas()
-        _informacion["diccionario"] = _informacion.copy()
 
         if self._es_departamento(_informacion):
             _informacion["scubierta"] = _informacion["stotal"]

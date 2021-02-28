@@ -1,7 +1,7 @@
 class Propiedad:
 
     def __init__(self, ambiente, stotal, scubierta, bano, dormitorio, alquiler, expensas, direccion,
-                 ubicacion, descripcion, caracteristicas, diccionario, url, antiguedad=None):
+                 ubicacion, descripcion, caracteristicas, url, antiguedad=None):
         self._ambientes = ambiente
         self._antiguedad = antiguedad
         self._superficie_total = stotal
@@ -15,10 +15,6 @@ class Propiedad:
         self._descripcion = descripcion
         self._caracteristicas = caracteristicas
         self._url = url
-        self._diccionario = diccionario #TODORONI esto pa printear, puede cambiarse
-
-    def diccionario(self):
-        return self._diccionario
 
     def ambientes(self) -> int:
         return self._ambientes

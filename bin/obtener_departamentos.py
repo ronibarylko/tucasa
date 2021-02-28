@@ -18,7 +18,7 @@ def main(url, archivo_salida):
     paginas = respuesta_inicial.cantidad_de_paginas()
     print(f"Encontré {resultados} resultados en {paginas} páginas.")
 
-    propiedades_as_dict = [p.diccionario() for p in obtener_propiedades(paginas, respuesta_inicial)]
+    propiedades_as_dict = [vars(p) for p in obtener_propiedades(paginas, respuesta_inicial)]
     df = pd.DataFrame(propiedades_as_dict)
     df.to_csv(archivo_salida, index=False)
 
