@@ -5,7 +5,7 @@ import googlemaps
 import pandas as pd
 
 
-class Distancias(object):
+class Distancias:
 
     def __init__(self, archivo: str, key: str = ""):
         self.logger = logging.getLogger(__name__)
